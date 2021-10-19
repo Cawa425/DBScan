@@ -17,10 +17,10 @@ def get_dist(p1, p2):
     return np.sqrt((p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2)
 
 
-number_of_colors = 8
+# point colors
+number_of_colors = 8  # макс цветов
 colors = ["#" + ''.join([random.choice('0123456789ABCDEF') for j in range(6)])
           for i in range(number_of_colors)]
-
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -35,7 +35,7 @@ current_group_number = 0
 
 def init_pygame():
     WIDTH = 480  # ширина игрового окна
-    HEIGHT = 600 # высота игрового окна
+    HEIGHT = 600  # высота игрового окна
     FPS = 60
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -139,29 +139,27 @@ def clustering(points, screen):
                 point.group = -1
         draw_point(point, screen)
         pygame.display.update()
-        wait(200)
+        wait(150)
 
 
 if __name__ == '__main__':
     points = []
-
     clock = pygame.time.Clock()
     screen = init_pygame()
     running = True
 
     while running:
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:
+                if event.button == 1:  # left click
                     new_points = generate_points(Point(event.pos[0], event.pos[1], BLACK))
                     for point in new_points:
                         pygame.draw.circle(screen, point.color, (point.x, point.y), 3)
                     points += new_points
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 3:
+                if event.button == 3:  # right click
                     points = sort_points(points)
                     clustering(points, screen)
                     points = resolve_border_points(points)
