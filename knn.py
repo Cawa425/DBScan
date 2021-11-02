@@ -3,7 +3,7 @@ import pygame
 import numpy as np
 from random import randrange
 import collections
-
+from math import sqrt
 
 
 class Point(object):
@@ -83,7 +83,6 @@ def create_new_point(point):
     return Point(point.x, point.y, point.color)
 
 
-
 def draw_points(points, screen):
     for point in points:
         draw_point(point, screen)
@@ -94,7 +93,7 @@ def draw_point(point, screen):
     pygame.draw.circle(screen, point.color, (point.x, point.y), 3)
 
 
-def knn_start(points, new_point, k):
+def knn_group(points, new_point, k):
     dicti = {}
     for point in points:
         dist = get_dist(point, new_point)
@@ -102,24 +101,21 @@ def knn_start(points, new_point, k):
         dicti[dist] = group
     dicti = collections.OrderedDict(sorted(dicti.items()))
     dicti = {key: val for key, val in dicti.items() if val != -1}
-    result = list(dicti.values())[:k]
-    group = collections.Counter(result).most_common()[0][0]
-    new_point.group = group
-    new_point.color = get_color(new_point)
-    pass
+    neighours = list(dicti.values())[:k]
+    g = collections.Counter(neighours).most_common()[0][0]
+    return g
 
 
-def cross_validation_split(dataset, folds=10):
-    dataset_split = list()
-    dataset_copy = list(dataset)
-    fold_size = int(len(dataset) / folds)
-    for i in range(folds):
-        fold = list()
-        while len(fold) < fold_size:
-            index = randrange(len(dataset_copy))
-            fold.append(dataset_copy.pop(index))
-        dataset_split.append(fold)
-    return dataset_split
+def get_k_param(points):
+    variants = {}
+    for k in range(3, int(sqrt(len(points)))):
+        variants[k] = 0
+        for p in points:
+            predicted_group = knn_group(points, p, k)
+            if p.group == predicted_group:
+                variants[k] += 1
+    total_k = max(variants, key=variants.get)
+    return total_k
 
 
 if __name__ == '__main__':
@@ -130,6 +126,7 @@ if __name__ == '__main__':
 
     points += generate_start_clusters(5)
     draw_points(points, screen)
+    k = get_k_param(points)
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT: running = False
@@ -137,7 +134,11 @@ if __name__ == '__main__':
                 if event.button == 1:  # left click
                     point = create_new_point(Point(event.pos[0], event.pos[1], BLACK))
                     pygame.draw.circle(screen, point.color, (point.x, point.y), 3)
-                    knn_start(points, point, 3)
+
+                    group = knn_group(points, point, k)
+                    point.group = group
+                    point.color = get_color(point)
                     points.append(point)
+
                     draw_points(points, screen)
         pygame.display.update()
