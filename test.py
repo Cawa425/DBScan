@@ -19,6 +19,6 @@ def test_plot(X, y, svm_model):
     plt.contourf(xx, yy, np.sign(z_model.reshape(xx.shape)), alpha=0.3, levels=2, cmap=ListedColormap(rgb), zorder=1)
 
 
-array, group = make_blobs(n_samples=50, centers=2, random_state=2, cluster_std=1.5)
+array, group = make_blobs(n_samples=200, centers=2, random_state=2, cluster_std=1.5)
 test_plot(array, group, SVM.SVM(kernel='linear', C=10, max_iter=50))
 plt.show()
