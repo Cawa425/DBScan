@@ -14,11 +14,11 @@ def test_plot(X, y, svm_model):
     svm_model.fit(X, y)
     z_model = svm_model.decision_function(np.c_[xx.ravel(), yy.ravel()]).reshape(xx.shape)
 
-    plt.scatter(X[:, 0], X[:, 1], c=y, s=50, cmap='cool')
+    plt.scatter(X[:, 0], X[:, 1], c=y, s=25, cmap='cool')
     plt.contour(xx, yy, z_model, colors='k', levels=[-1, 0, 1], alpha=1, linestyles=['--', '-', '--'])
     plt.contourf(xx, yy, np.sign(z_model.reshape(xx.shape)), alpha=0.3, levels=2, cmap=ListedColormap(rgb), zorder=1)
 
 
 array, group = make_blobs(n_samples=200, centers=2, random_state=2, cluster_std=1.5)
-test_plot(array, group, SVM.SVM(kernel='linear', C=10, max_iter=50))
+test_plot(array, group, SVM.SVM(c=10, max_iter=50))
 plt.show()
