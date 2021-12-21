@@ -6,7 +6,7 @@ pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files (x86)\Tesseract-OCR\t
 
 img = cv2.imread('target.jpg')
 config = ' --psm 3 outputbase digits'
-data = pytesseract.image_to_string(img, lang='eng', config=config)
+data = pytesseract.image_to_string(img, config=config)
 print(data)
 
 #show
