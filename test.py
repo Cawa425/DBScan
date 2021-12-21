@@ -3,12 +3,10 @@ import random
 import matplotlib.pyplot as plt
 import numpy
 import numpy as np
-from sklearn.svm._libsvm import predict
 
 import SVM
 from sklearn.datasets import make_blobs
 from matplotlib.colors import ListedColormap
-
 
 
 def test_plot(X, y, svm_model):
@@ -28,10 +26,9 @@ def test_plot(X, y, svm_model):
 
 
 array, group = make_blobs(n_samples=10, centers=2, random_state=2, cluster_std=1.5)
-model  =SVM.SVM(c=10, max_iter=50)
+model = SVM.SVM(c=10, max_iter=50)
 test_plot(array, group, model)
 plt.show()
-
 
 points_to_add = 10
 for _ in range(points_to_add):
@@ -42,4 +39,3 @@ for _ in range(points_to_add):
     group = model.predict(array)
     test_plot(array, group, model)
     plt.show()
-
