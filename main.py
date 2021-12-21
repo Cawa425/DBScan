@@ -2,7 +2,7 @@ import cv2
 import pytesseract
 from pytesseract import Output
 
-pytesseract.pytesseract.tesseract_cmd = r'D:\Program Files\Tesseract-OCR\tesseract.exe'
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files (x86)\Tesseract-OCR\tesseract.exe'
 
 img = cv2.imread('target.jpg')
 config = ' --psm 3 outputbase digits'
